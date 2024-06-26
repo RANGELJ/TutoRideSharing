@@ -1,22 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import auth, {type FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {SafeAreaView, Button, Text} from 'react-native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import React, {useState} from 'react';
+import {type FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {SafeAreaView, Text} from 'react-native';
 import Animated, {
-  useAnimatedProps,
-  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  withTiming,
-  runOnJS,
 } from 'react-native-reanimated';
-import AppConstants from './constants.json';
+import SvgBadge from './src/svg/SvgBadge';
+import constantColor from './src/shared/constantColor';
 
 const safeAreaStyleBase = {
   height: '100%',
   justifyContent: 'center',
   alignItems: 'center',
+  gap: 10,
+} as const;
+
+const labelStyle = {
+  fontWeight: 'bold',
+  color: constantColor('800'),
+  fontSize: 17,
 } as const;
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
@@ -38,12 +41,8 @@ function App(): React.JSX.Element {
 
   return (
     <AnimatedSafeAreaView style={[safeAreaStyleBase, safeAreaAnimatedStyle]}>
-      <Text
-        style={{
-          fontWeight: 'bold',
-        }}>
-        Cargando tu perfil
-      </Text>
+      <SvgBadge />
+      <Text style={labelStyle}>Cargando tu perfil</Text>
     </AnimatedSafeAreaView>
   );
 }
