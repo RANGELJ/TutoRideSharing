@@ -1,6 +1,6 @@
-const waitMilliseconds = (time: number) =>
+const waitMilliseconds = (timeInMilliseconds: number) =>
   new Promise<void>(resolve => {
-    setTimeout(resolve, time);
+    setTimeout(resolve, timeInMilliseconds);
   });
 
 export default waitMilliseconds;

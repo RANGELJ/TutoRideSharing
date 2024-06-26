@@ -1,13 +1,17 @@
-import React, {useState} from 'react';
-import {type FirebaseAuthTypes} from '@react-native-firebase/auth';
+import React, {useEffect, useMemo, useState} from 'react';
+import auth, {type FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {SafeAreaView, Text} from 'react-native';
 import Animated, {
+  LightSpeedInRight,
+  LightSpeedOutLeft,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
 import SvgBadge from './src/svg/SvgBadge';
 import constantColor from './src/shared/constantColor';
+import waitMilliseconds from './src/shared/waitMilliseconds';
 
 const safeAreaStyleBase = {
   height: '100%',
@@ -24,23 +28,47 @@ const labelStyle = {
 
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
+const exitingAnimation = LightSpeedOutLeft.delay(1000);
+
 function App(): React.JSX.Element {
-  const [loadingFirebaseAuth] = useState(true);
+  const [isAnimatingEnter, setIsAnimatingEnter] = useState(true);
+  const [loadingFirebaseAuth, setIsLoadingFirebaseAuth] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
-  const opacity = useSharedValue(0);
-  const translateY = useSharedValue(50);
+  useEffect(() => {
+    if (isAnimatingEnter) {
+      return;
+    }
+    return auth().onAuthStateChanged(currentUser => {
+      setUser(currentUser);
+      setIsLoadingFirebaseAuth(false);
+    });
+  }, [isAnimatingEnter]);
 
-  const safeAreaAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: withSpring(opacity.value),
-    transform: [{translateY: withSpring(translateY.value)}],
-  }));
+  const enteringAnimation = useMemo(
+    () =>
+      LightSpeedInRight.withCallback(() => {
+        runOnJS(setIsAnimatingEnter)(false);
+      }),
+    [],
+  );
 
-  opacity.value = 1;
-  translateY.value = 0;
+  if (!loadingFirebaseAuth) {
+    return (
+      <AnimatedSafeAreaView
+        key="afterEnter"
+        style={safeAreaStyleBase}
+        entering={LightSpeedInRight}>
+        <Text>After animation</Text>
+      </AnimatedSafeAreaView>
+    );
+  }
 
   return (
-    <AnimatedSafeAreaView style={[safeAreaStyleBase, safeAreaAnimatedStyle]}>
+    <AnimatedSafeAreaView
+      style={safeAreaStyleBase}
+      entering={enteringAnimation}
+      exiting={exitingAnimation}>
       <SvgBadge />
       <Text style={labelStyle}>Cargando tu perfil</Text>
     </AnimatedSafeAreaView>
