@@ -1,118 +1,99 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {useEffect, useState} from 'react';
+import auth, {type FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {SafeAreaView, Button, Text} from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Animated, {
+  useAnimatedProps,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
+import AppConstants from './constants.json';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+enum State {
+  APARECIENDO,
+  LISTO,
+  REMOVIDO,
 }
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [state, setState] = useState(State.APARECIENDO);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+
+  const opacity = useSharedValue(0);
+
+  useEffect(() => {
+    if (state !== State.LISTO) {
+      return;
+    }
+    GoogleSignin.configure({
+      iosClientId: AppConstants.GOOGLE_SERCIVE_IOS_CLIENT_ID,
+    });
+    return auth().onAuthStateChanged(updatedUser => {
+      setUser(updatedUser);
+      opacity.value = 0;
+    });
+  }, [state, opacity]);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  } as const;
+
+  console.log(State[state]);
+
+  const onAnimationEnded = () =>
+    setState(current => {
+      switch (current) {
+        case State.APARECIENDO:
+          return State.LISTO;
+        case State.LISTO:
+          return State.REMOVIDO;
+        default:
+          return current;
+      }
+    });
+
+  const cargandoDatosStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(
+      opacity.value,
+      {
+        duration: 2000,
+      },
+      () => {
+        runOnJS(onAnimationEnded)();
+      },
+    ),
+  }));
+
+  if (state !== State.REMOVIDO) {
+    return (
+      <AnimatedSafeAreaView
+        style={[backgroundStyle, cargandoDatosStyle]}
+        onLayout={() => {
+          opacity.value = 1;
+        }}>
+        <Text>Cargando datos de usuario</Text>
+      </AnimatedSafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+      <Button
+        title={user ? 'Salir' : 'Entrar con google'}
+        onPress={() => {
+          console.log('here!');
+        }}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
