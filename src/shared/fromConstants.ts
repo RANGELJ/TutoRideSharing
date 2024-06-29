@@ -2,6 +2,7 @@ import constants from '../../constants.json';
 
 export type Constants = {
   GOOGLE_SERCIVE_IOS_CLIENT_ID: string;
+  APP_NAME: string;
   THEME: {
     colors: {
       primary: {

@@ -1,8 +1,8 @@
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import Animated, {BounceIn, BounceOut, runOnJS} from 'react-native-reanimated';
-import constantColor from '../shared/constantColor';
 import SvgBadge from '../svg/SvgBadge';
 import React, {useMemo} from 'react';
+import Title from './Title';
 
 const frameStyle = {
   width: '100%',
@@ -14,12 +14,6 @@ const frameStyle = {
 const iconFrameStyle = {
   justifyContent: 'center',
   alignItems: 'center',
-} as const;
-
-const labelStyle = {
-  fontWeight: 'bold',
-  color: constantColor('800'),
-  fontSize: 17,
 } as const;
 
 type Props = {
@@ -51,7 +45,7 @@ const LoadingAuth = ({onReady, onDisapeared}: Props) => {
         entering={enteringAnimation}
         exiting={exitingAnimation}>
         <SvgBadge />
-        <Text style={labelStyle}>Cargando tu perfil</Text>
+        <Title>Cargando tu perfil</Title>
       </Animated.View>
     </View>
   );

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import auth, {type FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {SafeAreaView, Text} from 'react-native';
 import LoadingAuth from './src/components/LoadingAuth';
+import ScreenNoUser from './src/screens/ScreenNoUser';
 
 const safeAreaStyleBase = {
   flex: 1,
@@ -42,7 +43,10 @@ function App(): React.JSX.Element {
         if (!authIsReady) {
           return null;
         }
-        return <Text>Resto de la aplicacion</Text>;
+        if (user) {
+          return <Text>Tiene usuario</Text>;
+        }
+        return <ScreenNoUser />;
       })()}
     </SafeAreaView>
   );
