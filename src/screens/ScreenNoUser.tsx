@@ -5,6 +5,7 @@ import Title from '../components/Title';
 import fromConstants from '../shared/fromConstants';
 import constantColor from '../shared/constantColor';
 import ButtonCreateGoogAccount from '../components/ButtonCreateGoogAccount';
+import TranslatedText from '../components/TranslatedText';
 
 const styles = StyleSheet.create({
   screen: {
@@ -38,16 +39,27 @@ const styles = StyleSheet.create({
 const ScreenNoUser = () => (
   <Animated.View style={styles.screen} entering={FadeInDown}>
     <View style={styles.titleView}>
-      <Title>{`¡Bienvenido a ${fromConstants().APP_NAME}!`}</Title>
-      <Text>Inicia sesión con Google para comenzar</Text>
+      <Title>
+        <TranslatedText
+          textKey="B"
+          interpolatedValues={{appname: fromConstants().APP_NAME}}
+        />
+      </Title>
+      <Text>
+        <TranslatedText textKey="C" />
+      </Text>
     </View>
     <View style={styles.actionView}>
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Iniciar sesión</Text>
+        <Text style={styles.buttonText}>
+          <TranslatedText textKey="D" />
+        </Text>
       </TouchableOpacity>
     </View>
     <View style={styles.footer}>
-      <Text>¿No tienes una cuenta de Google?</Text>
+      <Text>
+        <TranslatedText textKey="E" />
+      </Text>
       <ButtonCreateGoogAccount />
     </View>
   </Animated.View>

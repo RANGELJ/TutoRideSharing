@@ -3,6 +3,7 @@ import Animated, {BounceIn, BounceOut, runOnJS} from 'react-native-reanimated';
 import SvgBadge from '../svg/SvgBadge';
 import React, {useMemo} from 'react';
 import Title from './Title';
+import TranslatedText from './TranslatedText';
 
 const frameStyle = {
   width: '100%',
@@ -32,7 +33,7 @@ const LoadingAuth = ({onReady, onDisapeared}: Props) => {
 
   const exitingAnimation = useMemo(
     () =>
-      BounceOut.delay(2000).withCallback(() => {
+      BounceOut.delay(1000).withCallback(() => {
         runOnJS(onDisapeared)();
       }),
     [onDisapeared],
@@ -45,7 +46,9 @@ const LoadingAuth = ({onReady, onDisapeared}: Props) => {
         entering={enteringAnimation}
         exiting={exitingAnimation}>
         <SvgBadge />
-        <Title>Cargando tu perfil</Title>
+        <Title>
+          <TranslatedText textKey="A" />
+        </Title>
       </Animated.View>
     </View>
   );

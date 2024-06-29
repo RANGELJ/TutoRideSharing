@@ -1,5 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {Linking, Text, TouchableOpacity} from 'react-native';
+import TranslatedText from './TranslatedText';
 
 const ButtonCreateGoogAccount = () => {
   const [hasError, setHasError] = useState(false);
@@ -8,7 +9,7 @@ const ButtonCreateGoogAccount = () => {
     <TouchableOpacity
       onPress={async () => {
         setHasError(false);
-        const createAccountUrl = 'https://accounts.google.com/signup';
+        const createAccountUrl = 'httpss://accounts.google.com/signup';
         const canOpenUrl = await Linking.canOpenURL(createAccountUrl);
         if (canOpenUrl) {
           Linking.openURL(createAccountUrl);
@@ -21,7 +22,7 @@ const ButtonCreateGoogAccount = () => {
           () => (hasError ? {color: 'red'} : undefined),
           [hasError],
         )}>
-        {hasError ? 'No se pudo abrir el link' : 'Crea una aquí'}
+        <TranslatedText textKey={hasError ? 'F' : 'G'} />
       </Text>
     </TouchableOpacity>
   );
