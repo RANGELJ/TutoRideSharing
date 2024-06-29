@@ -1,9 +1,10 @@
 import React from 'react';
 import Animated, {FadeInDown} from 'react-native-reanimated';
-import {Button, Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Title from '../components/Title';
 import fromConstants from '../shared/fromConstants';
 import constantColor from '../shared/constantColor';
+import ButtonCreateGoogAccount from '../components/ButtonCreateGoogAccount';
 
 const styles = StyleSheet.create({
   screen: {
@@ -47,13 +48,7 @@ const ScreenNoUser = () => (
     </View>
     <View style={styles.footer}>
       <Text>¿No tienes una cuenta de Google?</Text>
-      <TouchableOpacity
-        onPress={() => {
-          Linking.openURL('https://accounts.google.com/signup');
-        }}
-      >
-        <Text>Crea una aquí</Text>
-      </TouchableOpacity>
+      <ButtonCreateGoogAccount />
     </View>
   </Animated.View>
 );
