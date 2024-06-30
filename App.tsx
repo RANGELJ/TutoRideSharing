@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import auth, {type FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {SafeAreaView, Text} from 'react-native';
+import {Button, SafeAreaView, Text} from 'react-native';
 import LoadingAuth from './src/components/LoadingAuth';
 import ScreenNoUser from './src/screens/ScreenNoUser';
 
@@ -44,7 +44,14 @@ function App(): React.JSX.Element {
           return null;
         }
         if (user) {
-          return <Text>Tiene usuario</Text>;
+          return (
+            <Button
+              title="Salir"
+              onPress={() => {
+                auth().signOut();
+              }}
+            />
+          );
         }
         return <ScreenNoUser />;
       })()}

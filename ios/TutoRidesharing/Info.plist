@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
-    <string>TutoRidesharing</string>
+    <string>TutoRideS</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>$(PRODUCT_NAME)</string>
+    <string>TutoRideS</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -22,7 +22,7 @@
     <string>????</string>
     <key>LSApplicationQueriesSchemes</key>
     <array>
-        <string>https://accounts.google.com/signup</string>
+      <string>https://accounts.google.com/signup</string>
     </array>
     <key>CFBundleURLTypes</key>
     <array>

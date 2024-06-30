@@ -1,3 +1,4 @@
+import React from 'react';
 import {useTranslation} from 'react-i18next';
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 const TranslatedText = ({interpolatedValues, textKey}: Props) => {
   const {t} = useTranslation();
 
-  return t(textKey, interpolatedValues);
+  return <>{t(textKey, interpolatedValues)}</>;
 };
 
 export default TranslatedText;

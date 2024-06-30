@@ -1,10 +1,17 @@
 {
   "GOOGLE_SERCIVE_IOS_CLIENT_ID": "715651254429-t1ckv2un9q59o6jf4lc1c6f0ubhpmiql.apps.googleusercontent.com",
-  "APP_NAME": "TutoRS",
+  "APP_NAME": "TutoRideS",
   "THEME": {
     "colors": {
       "primary": {
+        "50": "#faf5ff",
+        "300": "#d8b4fe",
+        "400": "#c084fc",
         "800": "#6b21a8"
+      },
+      "error": {
+        "700": "#be123c",
+        "900": "#881337"
       }
     }
   }

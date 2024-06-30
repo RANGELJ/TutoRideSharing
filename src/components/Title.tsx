@@ -4,7 +4,7 @@ import constantColor from '../shared/constantColor';
 
 const labelStyle = {
   fontWeight: 'bold',
-  color: constantColor('800'),
+  color: constantColor('primary', '800'),
   fontSize: 17,
 } as const;
 

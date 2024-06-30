@@ -6,7 +6,14 @@ export type Constants = {
   THEME: {
     colors: {
       primary: {
+        '50': string;
+        '300': string;
+        '400': string;
         '800': string;
+      };
+      error: {
+        '700': string;
+        '900': string;
       };
     };
   };
